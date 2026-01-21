@@ -32,6 +32,37 @@ bun publish             # Publish to npm (runs prepublishOnly: clean -> type-che
 bun publish --dry-run   # Test publish without uploading
 ```
 
+## CI/CD
+
+### GitHub Actions
+
+The project uses GitHub Actions for automated publishing to npm on tag pushes.
+
+**Trigger**: Pushing a tag matching `v*` (e.g., `v1.0.0`, `v1.1.0`)
+
+**Workflow**: `.github/workflows/publish.yml`
+- Checks out code
+- Sets up Bun runtime
+- Installs dependencies
+- Runs build and type-check
+- Publishes to npm using `NPM_TOKEN` secret
+
+**Setup**: Before using CI, add npm token to GitHub:
+1. Go to GitHub repository Settings → Secrets and variables → Actions
+2. Create a new secret named `NPM_TOKEN`
+3. Use your npm access token (automation token recommended)
+
+**Manual release**:
+```bash
+# Update version in package.json
+npm version patch|minor|major
+
+# Create and push tag
+git push origin --tags
+
+# CI will automatically publish to npm
+```
+
 Note: This project does not currently have a test framework configured. When adding tests, consider using Bun's built-in test runner.
 
 ### Build Process Details

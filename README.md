@@ -106,6 +106,8 @@ bun run type-check
 
 ## Publishing
 
+### Manual Publish
+
 ```bash
 bun publish
 ```
@@ -114,6 +116,28 @@ This will:
 1. Run type checking
 2. Build the project
 3. Publish to npm
+
+### Automated Publishing via CI
+
+The project uses GitHub Actions for automated publishing to npm on tag pushes.
+
+**Setup**:
+1. Go to GitHub repository Settings → Secrets and variables → Actions
+2. Create a new secret named `NPM_TOKEN`
+3. Use your npm access token (automation token recommended)
+
+**Release process**:
+```bash
+# Update version in package.json
+npm version patch|minor|major
+
+# Create and push tag
+git push origin --tags
+
+# CI will automatically publish to npm
+```
+
+**Trigger**: Pushing a tag matching `v*` (e.g., `v1.0.0`, `v1.1.0`)
 
 ## Requirements
 
