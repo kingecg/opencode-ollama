@@ -1,0 +1,47 @@
+{
+  "name": "opencode-ollama",
+  "version": "1.0.0",
+  "description": "Fetches Ollama models and configures them into OpenCode",
+  "author": "",
+  "license": "MIT",
+  "module": "index.ts",
+  "type": "module",
+  "bin": {
+    "opencode-ollama": "./dist/cli-wrapper.js"
+  },
+  "files": [
+    "dist/index.js",
+    "dist/cli-wrapper.js",
+    "config.json.example",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "type-check": "bun run tsc --noEmit",
+    "build": "bun build ./index.ts --outdir ./dist --target bun && bun run build:cli-wrapper",
+    "build:cli-wrapper": "echo '#!/usr/bin/env bun' > ./dist/cli-wrapper.js && cat ./dist/index.js >> ./dist/cli-wrapper.js && chmod +x ./dist/cli-wrapper.js",
+    "build:cli": "bun build ./index.ts --outfile ./dist/cli.js --compile --target bun",
+    "prepublishOnly": "bun run clean && bun run type-check && bun run build",
+    "dev": "bun --watch index.ts",
+    "start": "bun run index.ts",
+    "clean": "rm -rf ./dist"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "keywords": [
+    "opencode",
+    "ollama",
+    "llm",
+    "ai",
+    "models",
+    "plugin",
+    "cli"
+  ]
+}
