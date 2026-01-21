@@ -1,6 +1,6 @@
 {
   "name": "opencode-ollama",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fetches Ollama models and configures them into OpenCode",
   "author": "",
   "license": "MIT",
