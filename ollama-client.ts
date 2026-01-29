@@ -1,4 +1,5 @@
-import { fetch } from 'bun';
+
+import axios from 'axios';
 import type { OllamaModelsResponse } from './types.ts';
 
 export class OllamaFetchError extends Error {
@@ -14,22 +15,25 @@ export class OllamaClient {
   async fetchModels(): Promise<OllamaModelsResponse> {
     try {
       const url = this.normalizeUrl(this.baseUrl);
-      const response = await fetch(url);
+      const response = await axios.get(url);
 
-      if (!response.ok) {
-        throw new OllamaFetchError(
-          `Ollama API returned ${response.status}: ${response.statusText}`,
-        );
+      if (!response.data) {
+        throw new OllamaFetchError('No data in response');
       }
 
-      const data = await response.json() as unknown;
-      return this.validateModelsResponse(data);
+      return this.validateModelsResponse(response.data);
     } catch (error) {
       if (error instanceof OllamaFetchError) {
         throw error;
       }
-      if (error instanceof TypeError) {
-        throw new OllamaFetchError(`Failed to connect to Ollama at ${this.baseUrl}`, error);
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNREFUSED') {
+          throw new OllamaFetchError(`Failed to connect to Ollama at ${this.baseUrl}`, error);
+        }
+        throw new OllamaFetchError(
+          `Ollama API returned ${error.response?.status}: ${error.response?.statusText}`,
+          error,
+        );
       }
       throw new OllamaFetchError(
         `Unexpected error fetching models: ${error instanceof Error ? error.message : String(error)}`,

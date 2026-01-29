@@ -24,7 +24,8 @@
     "prepublishOnly": "bun run clean && bun run type-check && bun run build",
     "dev": "bun --watch index.ts",
     "start": "bun run index.ts",
-    "clean": "rm -rf ./dist"
+    "clean": "rm -rf ./dist",
+    "build:tsc": "tsc -p tsconfig.tscbuild.json"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -43,5 +44,9 @@
     "models",
     "plugin",
     "cli"
-  ]
+  ],
+  "dependencies": {
+    "axios": "^1.13.4",
+    "inquirer": "^13.2.2"
+  }
 }

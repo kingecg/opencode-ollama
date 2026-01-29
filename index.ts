@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { cwd } from 'node:process';
-import { OllamaClient, OllamaFetchError } from './ollama-client.ts';
-import { writeOpenCodeConfig, ConfigWriteError } from './config-writer.ts';
-import { transformModels } from './model-transformer.ts';
-import type { ConfigReadResult, PluginConfig } from './types.ts';
+import { OllamaClient, OllamaFetchError } from './ollama-client.js';
+import { writeOpenCodeConfig, ConfigWriteError, DEFAULT_BASE_URL } from './config-writer.js';
+import { transformModels } from './model-transformer.js';
+import type { ConfigReadResult, PluginConfig } from './types.js';
 
-const DEFAULT_BASE_URL = 'http://localhost:11434';
+
 const CONFIG_FILE_NAME = 'config.json';
 
 async function main(): Promise<void> {
